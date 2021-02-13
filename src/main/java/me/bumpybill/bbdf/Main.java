@@ -8,7 +8,7 @@ import java.io.Console;
 public class Main implements ModInitializer {
     @Override
     public void onInitialize() {
-        System.out.println("Hello Fabric world!");
+        System.out.println("\"BB To DF\" Loaded");
 
         CommandRegistrationCallback.EVENT.register(Command::register);
     }
