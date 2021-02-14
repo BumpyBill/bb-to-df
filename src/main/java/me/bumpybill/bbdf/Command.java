@@ -3,6 +3,7 @@ package me.bumpybill.bbdf;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.client.MinecraftClient;
 
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.network.MessageType;
 
 import net.minecraft.server.command.CommandManager;
@@ -15,13 +16,15 @@ import net.minecraft.world.GameMode;
 
 public class Command {
     public static void register(CommandDispatcher<ServerCommandSource> dispatcher, boolean dedicated) {
+        // Hacky fix
         MinecraftClient mc = MinecraftClient.getInstance();
-        GameMode gamemode = mc.getInstance().getNetworkHandler().getPlayerListEntry(mc.player.getGameProfile().getId()).getGameMode();
-
+        ClientPlayerEntity p = mc.player;
+        GameMode gameMode = GameMode.CREATIVE; // temp value
+        
         dispatcher.register(CommandManager.literal("bbdf")
             .then(CommandManager.literal("load")
                 .executes(context -> {
-                    if (gamemode == GameMode.CREATIVE) {
+                    if (gameMode == GameMode.CREATIVE) {
                         return 1;
                     } else {
                         return 0;
@@ -30,7 +33,7 @@ public class Command {
             )
             .then(CommandManager.literal("system")
                 .executes(context -> {
-                    if (gamemode == GameMode.CREATIVE) {
+                    if (gameMode == GameMode.CREATIVE) {
                         mc.inGameHud.addChatMessage(MessageType.SYSTEM,
                              new LiteralText("Loading system")
                                   .setStyle(Style.EMPTY.withColor(Formatting.DARK_AQUA)),
@@ -55,4 +58,6 @@ public class Command {
            })
         );
     }
+
+
 }
