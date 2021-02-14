@@ -19,8 +19,9 @@ public class Command {
         // Hacky fix
         MinecraftClient mc = MinecraftClient.getInstance();
         ClientPlayerEntity p = mc.player;
-        GameMode gameMode = GameMode.CREATIVE; // temp value
-        
+
+        GameMode gameMode =  mc.getNetworkHandler().getPlayerListEntry(p.getGameProfile().getId()).getGameMode();
+
         dispatcher.register(CommandManager.literal("bbdf")
             .then(CommandManager.literal("load")
                 .executes(context -> {
@@ -37,14 +38,14 @@ public class Command {
                         mc.inGameHud.addChatMessage(MessageType.SYSTEM,
                              new LiteralText("Loading system")
                                   .setStyle(Style.EMPTY.withColor(Formatting.DARK_AQUA)),
-                                  mc.player.getUuid());
+                                  p.getUuid());
 
                         return 1;
                     } else {
                         mc.inGameHud.addChatMessage(MessageType.SYSTEM,
                                 new LiteralText("Required gamemode: Creative")
                                         .setStyle(Style.EMPTY.withColor(Formatting.RED)),
-                                        mc.player.getUuid());
+                                        p.getUuid());
                         return 0;
                     }
                 })
@@ -52,7 +53,7 @@ public class Command {
            .executes(context -> {
                 mc.inGameHud.addChatMessage(MessageType.SYSTEM,
                     new LiteralText("Please provide a subcommand.").setStyle(Style.EMPTY.withColor(Formatting.RED)),
-                    mc.player.getUuid());
+                    p.getUuid());
 
                 return 0;
            })

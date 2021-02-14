@@ -10,8 +10,10 @@ public class Main implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        System.out.println("\"BB To DF\" Loaded");
+        System.out.println("\"BB To DF\" Initialized");
 
         CommandRegistrationCallback.EVENT.register(Command::register);
     }
+
+
 }
